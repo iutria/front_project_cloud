@@ -1,23 +1,16 @@
-import { Button, Input, Spacer, Text } from '@nextui-org/react';
+import { Button, Spacer, Text } from '@nextui-org/react';
 import { useNavigate } from 'react-router-dom';
-import { Routes } from '../../routes/Routes';
-import RecoverPassword from './components/modals/RecoverPassword';
-import useRecoverPasswordModal from './states/useRecoverPasswordModal';
+import { PageRoutes } from '../../routes/PageRoutes';
 
 import './styles/login.css';
+import LoginForm from './components/forms/LoginForm';
 
 const Login = () => {
 
-  const { showModal } = useRecoverPasswordModal();
   const navigate = useNavigate();
-
-  const handleLogin = ()=>{
-    navigate(Routes.HOME);
-  }
 
   return (
     <div className='login-container'>
-      <RecoverPassword />
       <div className='card-login'>
         <div style={{width: '100%'}}>
           <Text css={{ fontSize: '20px', margin: '$0'}} h1>
@@ -31,19 +24,12 @@ const Login = () => {
           </Text>
         </div>
         <Spacer/>
-        <Input aria-label='email' width='100%' placeholder="Correo" type='email' clearable/>
+        <LoginForm />
         <Spacer/>
-        <Input.Password aria-label='password' width='100%' placeholder="Contraseña" clearable/>
-        <Spacer/>
-        <Button type='submit' onPress={handleLogin} css={{width: '100%'}}>Iniciar sesion</Button>
-        <Spacer/>
-        <Button type='button' onPress={()=>navigate(Routes.CREATE_ACCOUNT)} css={{width: '100%'}} color="primary" auto ghost>
+        <Button type='button' onPress={()=>navigate(PageRoutes.CREATE_ACCOUNT)} css={{width: '100%'}} color="primary" auto ghost>
           Crear cuenta
         </Button>
         <Spacer/>
-        <Button type='button' onPress={showModal} light css={{width: '100%'}} color="primary">
-          ¡Olvide mi contraseña!
-        </Button>
       </div>
     </div>
   )

@@ -1,8 +1,14 @@
-import { Container, Table, Text } from "@nextui-org/react"
+import { Button, Container, Table, Text } from "@nextui-org/react"
+import useDetailsMedicalHistoryModal from "./states/useDetailsMedicalHistoryModal";
+import DetailsMedicalHistoryModal from "./components/modals/DetailsMedicalHistory";
 
 const MedicalStories = () => {
+
+    const { showModal } = useDetailsMedicalHistoryModal();
+
     return (
         <Container>
+            <DetailsMedicalHistoryModal />
             <Text h2>Historias medicas</Text>
             <Table
                 aria-label="Example table with static content"
@@ -18,7 +24,11 @@ const MedicalStories = () => {
                 </Table.Header>
                 <Table.Body>
                     <Table.Row key="1">
-                        <Table.Cell>Tony Reichert</Table.Cell>
+                        <Table.Cell>
+                            <Button onPress={
+                                ()=>showModal('1')
+                            }>Ver</Button>
+                        </Table.Cell>
                         <Table.Cell>CEO</Table.Cell>
                         <Table.Cell>Active</Table.Cell>
                     </Table.Row>
