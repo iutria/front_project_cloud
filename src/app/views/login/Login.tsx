@@ -4,10 +4,21 @@ import { PageRoutes } from '../../routes/PageRoutes';
 
 import './styles/login.css';
 import LoginForm from './components/forms/LoginForm';
+import { useEffect } from 'react';
 
 const Login = () => {
 
   const navigate = useNavigate();
+
+  useEffect(
+    ()=>{
+      const token: string  | null = localStorage.getItem('token');
+
+      if(token){
+        navigate(PageRoutes.HOME);
+      }
+    },[]
+  )
 
   return (
     <div className='login-container'>

@@ -1,12 +1,97 @@
 import { Button, Container, Table, Text } from "@nextui-org/react";
 import useMedicalAppointmensModal from "./states/useMedicalAppointmensModal";
 import MedicalAppointmensModal from "./components/modals/MedicalAppointmensModal";
+import AppoimentRegisterModal from "./components/modals/AppoimentRegisterModal";
+import { useEffect, useState } from "react";
+import axios from "axios";
+import { MEDICAL_HISTORIES_API } from "../../../routes/ApiRoutes";
+import Swal from "sweetalert2";
+import { Date } from "../../../models/Date";
+import useAppoimentRegisterModal from "./states/useAppoimentRegisterModal";
+import { FaTrash } from "react-icons/fa6";
 
 const MedicalAppointments = () => {
+    
     const { showModal } = useMedicalAppointmensModal();
+    const { visible } = useAppoimentRegisterModal();
+    const [ dates, setDates ] = useState<Date[]>([]);
+
+    const getData = async()=>{
+        try {
+            const id = localStorage.getItem('id');
+            const resp = await axios.get(MEDICAL_HISTORIES_API+'/Cita/por-paciente/'+id)
+            if(resp.status!=200){
+                throw ''
+            }
+            setDates(resp.data)
+        } catch (error) {
+            Swal.fire({
+                text: 'Error al solicitar la cita',
+                title: 'Error',
+                icon: 'error',
+                customClass: {
+                    container: 'toFront'
+                }
+            })
+        }
+    }
+
+    const deleteDate = async(data: Date)=>{
+        try {
+            const resp = await axios.delete(MEDICAL_HISTORIES_API+'/Cita/'+data.id);
+            if(resp.status!=200){
+                throw ''
+            }
+
+            getData();
+
+            Swal.fire({
+                text: 'Se Eliminó la cita',
+                title: 'Ok',
+                icon: 'success',
+                customClass: {
+                    container: 'toFront'
+                }
+            })
+        } catch (error) {
+            Swal.fire({
+                text: 'Error al eliminar la cita',
+                title: 'Error',
+                icon: 'error',
+                customClass: {
+                    container: 'toFront'
+                }
+            })
+        }
+    }
+
+    const confirmDeleteDate = async(data: Date)=>{
+        Swal.fire({
+            title: "Eliminar",
+            text: `¿Quieres eliminar la cita ${data.especialidad} del dia ${data.dia.split('T')[0]}?`,
+            icon: "warning",
+            showCancelButton: true,
+            cancelButtonColor: "#3085d6",
+            confirmButtonColor: "#d33",
+            confirmButtonText: "Si, Confirmar",
+            cancelButtonText: 'No',
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    deleteDate(data)
+                }
+            });
+    }
+    
+    useEffect(
+        ()=>{
+            getData()
+        },[visible]
+    )
+
     return (
         <div>
             <MedicalAppointmensModal />
+            <AppoimentRegisterModal />
             <Container>
                 <Text h2>Citas medicas</Text>
                 <Button onPress={showModal}>Nueva cita</Button>
@@ -18,31 +103,28 @@ const MedicalAppointments = () => {
                     }}
                 >
                     <Table.Header>
-                        <Table.Column>NAME</Table.Column>
-                        <Table.Column>ROLE</Table.Column>
-                        <Table.Column>STATUS</Table.Column>
+                        <Table.Column>Especialidad</Table.Column>
+                        <Table.Column>Dia</Table.Column>
+                        <Table.Column>Hora</Table.Column>
+                        <Table.Column>Estado</Table.Column>
+                        <Table.Column>Eliminar</Table.Column>
                     </Table.Header>
                     <Table.Body>
-                        <Table.Row key="1">
-                            <Table.Cell>Tony Reichert</Table.Cell>
-                            <Table.Cell>CEO</Table.Cell>
-                            <Table.Cell>Active</Table.Cell>
-                        </Table.Row>
-                        <Table.Row key="2">
-                            <Table.Cell>Zoey Lang</Table.Cell>
-                            <Table.Cell>Technical Lead</Table.Cell>
-                            <Table.Cell>Paused</Table.Cell>
-                        </Table.Row>
-                        <Table.Row key="3">
-                            <Table.Cell>Jane Fisher</Table.Cell>
-                            <Table.Cell>Senior Developer</Table.Cell>
-                            <Table.Cell>Active</Table.Cell>
-                        </Table.Row>
-                        <Table.Row key="4">
-                            <Table.Cell>William Howard</Table.Cell>
-                            <Table.Cell>Community Manager</Table.Cell>
-                            <Table.Cell>Vacation</Table.Cell>
-                        </Table.Row>
+                        {
+                            dates.map(
+                                (item: Date, index: number)=>(
+                                    <Table.Row key={index}>
+                                        <Table.Cell>{item.especialidad}</Table.Cell>
+                                        <Table.Cell>{item.dia.split('T')[0]}</Table.Cell>
+                                        <Table.Cell>{item.hora}</Table.Cell>
+                                        <Table.Cell>{item.estado}</Table.Cell>
+                                        <Table.Cell>
+                                            {item.estado=='Confirmada' && <Button auto onPress={()=>confirmDeleteDate(item)} icon={<FaTrash />} color='error'/>}
+                                        </Table.Cell>
+                                    </Table.Row>
+                                )
+                            )
+                        }
                     </Table.Body>
                 </Table>
             </Container>

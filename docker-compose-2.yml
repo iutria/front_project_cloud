@@ -10,6 +10,7 @@ services:
       - proyecto
     environment:
       - USER_SERVICE_URL=http://usuarios:80/api/Users
+      - PATIENT_SERVICE_BASE_URL=http://pacientes:80/api/patients/
 
   pacientes:
      image: elianfragozo/pacientes:v2

@@ -1,36 +1,18 @@
-import { Button, Grid, Loading, Spacer, Text } from '@nextui-org/react'
-import Select, { Option } from '../../../../components/select/Select'
+import { Button, Loading, Spacer } from '@nextui-org/react'
 import { Form, Formik, FormikHelpers } from 'formik';
 import { Patient } from '../../../../models/Patient';
 import { useNavigate } from 'react-router-dom';
 import { PageRoutes } from '../../../../routes/PageRoutes';
-import { Input, InputProps, Password } from '../../../../components/input/Inputs';
 import Swal from 'sweetalert2';
 import { createAccountValidator } from '../../../../validators/create_account.validator';
 import { useCreateAccount } from '../../states/create_account.state';
+import FormFields from './FormFields';
 
 const CreateAccountForm = () => {
 
     const navigate = useNavigate();
 
     const { createAccount, isLoading } = useCreateAccount();
-
-    const options : Option[] = [
-        { value: 'Cédula de Ciudadanía', label: 'Cédula de Ciudadanía' },
-        { value: 'Tarjeta de Identidad', label: 'Tarjeta de Identidad' },
-        { value: 'Cédula de Extranjería', label: 'Cédula de Extranjería' },
-        { value: 'Pasaporte', label: 'Pasaporte' }
-    ]
-
-    const inputs: InputProps<Patient>[] = [
-        { type: 'number', label: 'Número de documento', field: 'identificationNumber' },
-        { type: 'date', label: 'Fecha de nacimiento', field: 'dateOfBirth' },
-        { type: 'number', label: 'Número de telefono', field: 'phone' },
-        { type: 'text', label: 'Nombres', field: 'firstName' },
-        { type: 'text', label: 'Apellidos', field: 'lastName' },
-        { type: 'email', label: 'Correo', field: 'email' },
-        { type: 'email', label: 'Confirmación de correo', field: 'confirmEmail' },
-    ]
 
     const initialValues: Patient = {
         confirmEmail: '',
@@ -76,36 +58,7 @@ const CreateAccountForm = () => {
             validate={createAccountValidator}
         >
             <Form>
-                <div style={{ width: '100%' }}>
-                    <Text css={{ fontSize: '20px', margin: '$0' }} h1>
-                        Pulsar<Text css={{ color: '$primary' }} span>care</Text>
-                    </Text>
-                    <Text css={{ fontSize: '60px', margin: '$0' }} h2>
-                        Crear cuenta<Text css={{ color: '$primary' }} span>!</Text>
-                    </Text>
-                    <Text>
-                        Justos somos más fuertes.
-                    </Text>
-                </div>
-                <Spacer />
-                <Grid.Container gap={1}>
-                    <Grid xs={6} css={{ flexDirection: 'column' }}>
-                        <Select<Patient> field='identificationType' options={options} />
-                    </Grid>
-                    {
-                        inputs.map((item, index) => (
-                            <Grid xs={6} key={index}>
-                                <Input<Patient> field={item.field} label={item.label} type={item.type} />
-                            </Grid>
-                        ))
-                    }
-                    <Grid xs={6}>
-                        <Password<Patient> field='password' clearable label='Contraseña' />
-                    </Grid>
-                    <Grid xs={6}>
-                        <Password<Patient> field='confirmPassword' clearable label='Confirmación de Contraseña' />
-                    </Grid>
-                </Grid.Container>
+                <FormFields/>
                 <Spacer />
                 <div style={{ width: '100%' }}>
                     <Button type='submit' disabled={isLoading} css={{ width: '100%' }}>

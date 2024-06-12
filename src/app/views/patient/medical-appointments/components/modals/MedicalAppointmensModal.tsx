@@ -1,21 +1,50 @@
-import { Button, Grid, Input, Modal, Text } from '@nextui-org/react';
+import { Button, Modal, Table, Text } from '@nextui-org/react';
 import useMedicalAppointmensModal from '../../states/useMedicalAppointmensModal';
-import Select from 'react-select'
+import { useEffect, useState } from 'react';
+import { DOCTOR_API } from '../../../../../routes/ApiRoutes';
+import axios from 'axios';
+import Swal from 'sweetalert2';
+import { Doctor } from '../../../../../models/Doctor';
+import { FaRegCalendarPlus } from 'react-icons/fa6';
+import useAppoimentRegisterModal from '../../states/useAppoimentRegisterModal';
 
 const MedicalAppointmensModal = () => {
-  const { closeModal, visible } = useMedicalAppointmensModal();
 
-  const options = [
-    { value: '', label: 'Medicina general' },
-    { value: '', label: 'Odontologia' },
-    { value: '', label: 'Psicologia' },
-  ]
+  const { closeModal, visible } = useMedicalAppointmensModal();
+  const { showModal } = useAppoimentRegisterModal();
+
+  const [ doctors, setDoctors ] = useState<Doctor[]>([]);
+
+  const getAllDoctors = async()=>{
+    try {
+      const resp = await axios.get(DOCTOR_API + '/all');
+
+      if(resp.status!=200){
+        throw '';
+      }
+
+      setDoctors(resp.data)
+    } catch (error) {
+      Swal.fire({
+        title: 'Error',
+        icon: 'error',
+        text: 'Error al consultar los medicos'
+      })
+    }
+  }
+
+  useEffect(
+    ()=>{
+      getAllDoctors()
+    },[visible]
+  );
 
   return (
     <>
       <Modal
         blur
         scroll
+        fullScreen
         preventClose
         closeButton
         open={visible}
@@ -24,61 +53,53 @@ const MedicalAppointmensModal = () => {
         aria-labelledby="modal-recovery"
       >
         <Modal.Header>
-          <Text h2>Nueva cita medica</Text>
+          <Text h2>Medicos</Text>
         </Modal.Header>
-        <Modal.Body>
-          <Grid.Container gap={1}>
-            <Grid sm={6}>
-              <Select
-                isClearable
-                styles={{
-                  container: (base) => ({
-                    ...base,
-                  }),
-                  control: (base) => ({
-                    ...base,
-                    borderRadius: 10,
-                    border: 'none',
-                    background: '#f1f3f5'
-                  }),
-                }}
-                placeholder='Tipo de cita'
-                options={options}
-                className="react-select-container"
-              />
-            </Grid>
-            <Grid sm={6}>
-              <Select
-                isClearable
-                styles={{
-                  container: (base) => ({
-                    ...base,
-                  }),
-                  control: (base) => ({
-                    ...base,
-                    borderRadius: 10,
-                    border: 'none',
-                    background: '#f1f3f5'
-                  }),
-                }}
-                placeholder='Profesional'
-                options={options}
-                className="react-select-container"
-              />
-            </Grid>
-            <Grid sm={6}>
-              <Input type='datetime-local' clearable css={{ width: '100%' }} label='Fecha y Hora' />
-            </Grid>
-          </Grid.Container>
-        </Modal.Body>
-        <Modal.Footer>
-          <Button auto flat color="error" onPress={closeModal}>
-            Cancelar
-          </Button>
-          <Button auto onPress={closeModal}>
-            Continuar
-          </Button>
-        </Modal.Footer>
+          <Modal.Body>
+          <Table
+              aria-label="Example table with static content"
+              css={{
+                height: "auto",
+                minWidth: "100%",
+              }}
+            >
+              <Table.Header>
+                <Table.Column>MEDICO</Table.Column>
+                <Table.Column>ESPECIALIDAD</Table.Column>
+                <Table.Column>ACCIONES</Table.Column>
+              </Table.Header>
+              <Table.Body>
+                {
+                  doctors.map(
+                    (item: Doctor, index: number)=>(
+                      <Table.Row key={index}>
+                        <Table.Cell>{item.nombre} {item.apellido}</Table.Cell>
+                        <Table.Cell>{item.especialidades.map(
+                            (especialidad:string)=>(especialidad + ' ' )
+                          )}</Table.Cell>
+                        <Table.Cell>
+                          <Button
+                            onPress={()=>{showModal(item)}}
+                            auto
+                            icon={<FaRegCalendarPlus />}
+                            title='Apartar cita'
+                          />
+                        </Table.Cell>
+                      </Table.Row>
+                    )
+                  )
+                }
+              </Table.Body>
+                </Table>
+          </Modal.Body>
+              <Modal.Footer>
+                <Button
+                  onPress={closeModal}
+                  color='error'
+                >
+                  Cancelar
+                </Button>
+              </Modal.Footer>
       </Modal>
     </>
   );

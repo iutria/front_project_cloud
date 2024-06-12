@@ -2,19 +2,21 @@ import { Input as ReactInput } from '@nextui-org/react'
 import { useFormikContext } from 'formik';
 
 export interface InputProps<T> extends React.InputHTMLAttributes<HTMLInputElement>{
+    disabled?: boolean; 
     type?: string;
     clearable?: boolean;
     label: string;
     field?: keyof T;
 }
 
-export const Input = <T, >({ type = 'text', clearable, label, field, ...rest } : InputProps<T>) => {
+export const Input = <T, >({ type = 'text', clearable, label, field, disabled, ...rest } : InputProps<T>) => {
 
     const formik = useFormikContext<T>();
 
     return (
         <div style={{width: '100%'}}>
             <ReactInput 
+                disabled={disabled}
                 css={{width: '100%'}}
                 type={type} 
                 clearable={clearable}

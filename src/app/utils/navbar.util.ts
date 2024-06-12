@@ -20,7 +20,7 @@ export const patientOptions : Option[] = [
         icon: FaHistory
     },
     {
-        url: PageRoutes.MEDICAL_APPOINTMENTS,
+        url: PageRoutes.OPTIONS,
         name: 'Opciones',
         icon: FaGear
     },
@@ -41,12 +41,7 @@ export const medicalOptions : Option[] = [
         url: PageRoutes.MEDICAL_APPOINTMENTS,
         name: 'Horarios',
         icon: FaCalendarAlt
-    },
-    {
-        url: PageRoutes.MEDICAL_APPOINTMENTS,
-        name: 'Opciones',
-        icon: FaGear
-    },
+    }
 ]
 
 export const adminOptions : Option[] = [

@@ -12,19 +12,23 @@ export interface Option{
 interface SelectProps<T>{
     options: Option[];
     field?: keyof T;
+    text: string;
+    placeholder?: string;
+    isDisabled?: boolean;
 }
 
-const Select = <T, >({ options, field } : SelectProps<T>) => {
+const Select = <T, >({ options, field, text, placeholder, isDisabled } : SelectProps<T>) => {
 
     const formik = useFormikContext<T>();
 
     const [ value, setValue ] = useState<string>('');
 
     return (
-        <Container css={{flexDirection: 'column', padding: '0', margin: '0'}}>
-            <Text>Tipo de documento</Text>
+        <Container css={{flexDirection: 'column', padding: '0', margin: '0', }}>
+            <Text>{text}</Text>
             <ReactSelect
                 isClearable
+                isDisabled={isDisabled}
                 styles={{
                     container: (base) => ({
                         ...base,
@@ -33,10 +37,10 @@ const Select = <T, >({ options, field } : SelectProps<T>) => {
                         ...base,
                         borderRadius: 10,
                         border: 'none',
-                        background: '#f1f3f5'
+                        background: '#f1f3f5',
                     }),
                 }}
-                placeholder='Tipo de documento'
+                placeholder={placeholder}
                 //@ts-ignore
                 options={options}
                 className="react-select-container"

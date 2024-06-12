@@ -5,4 +5,5 @@ export const enum PageRoutes{
     CREATE_ACCOUNT = '/create-account',
     MEDICAL_APPOINTMENTS = '/home/medical-appointments',
     MEDICAL_STORIES = '/home/medical-stories',
+    OPTIONS = '/home/options',
 }
