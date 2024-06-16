@@ -23,8 +23,6 @@ export const useLogin = create<useLoginProps>((set: any)=>({
             }else{
                 resp = await axios.post(USERS_API + '/Users/medico-data', values);
             }
-            
-            console.log(resp)
 
             set({isLoading: false})
             
@@ -34,22 +32,28 @@ export const useLogin = create<useLoginProps>((set: any)=>({
 
             if(values.type=='paciente'){
                 localStorage.setItem('id', resp.data.patient.id)
-                localStorage.setItem('token', resp.data.token)
-                localStorage.setItem('rol', values.type) 
-                localStorage.setItem('name', resp.data.patient.firstName) 
+                localStorage.setItem('identificationType', resp.data.patient.identificationType)
+                localStorage.setItem('identificationNumber', resp.data.patient.identificationNumber)
+                localStorage.setItem('firstName', resp.data.patient.firstName) 
                 localStorage.setItem('lastName', resp.data.patient.lastName) 
-                localStorage.setItem('speciality', '') 
+                localStorage.setItem('dateOfBirth', resp.data.patient.dateOfBirth)
+                localStorage.setItem('phone', resp.data.patient.phone)
+                localStorage.setItem('email', resp.data.patient.email)
+                localStorage.setItem('token', resp.data.token)
+                localStorage.setItem('rol', 'paciente') 
             }else if(values.type=='medico'){
                 localStorage.setItem('id', resp.data.medico.id)
-                localStorage.setItem('token', resp.data.token)
-                localStorage.setItem('rol', values.type) 
-                localStorage.setItem('name', resp.data.medico.nombre) 
+                localStorage.setItem('firstName', resp.data.medico.nombre) 
                 localStorage.setItem('lastName', '') 
+                localStorage.setItem('dateOfBirth', '')
+                localStorage.setItem('phone', '')
+                localStorage.setItem('identificationType', '')
+                localStorage.setItem('identificationNumber', '')
                 localStorage.setItem('email', resp.data.medico.correo) 
                 localStorage.setItem('speciality', resp.data.medico.especialidad) 
-            }
-
-            console.log(resp)
+                localStorage.setItem('token', resp.data.token)
+                localStorage.setItem('rol', 'medico') 
+            }            
             
             return resp.data;
             

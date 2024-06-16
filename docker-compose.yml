@@ -1,52 +1,40 @@
-version: "3.1"
+version: '3.7'
+
 services:
-  pacientes:
-    image: elianfragozo/pacientes:v2
-    hostname: pacientes
-    ports:
-      - "80:80"
-    networks:
-      - pulsar_care
-    depends_on:
-      - usuarios
-    environment:
-      - USER_SERVICE_URL=http://usuarios:80/api/Users
-
-  historias:
-    image: elianfragozo/proyectohistorias:v1
-    hostname: historias
-    ports:
-      - 81:80
-    networks:
-      - pulsar_care
-
-  horarios:
-    image: elianfragozo/proyectohorarios:v1
-    hostname: horarios
-    ports:
-      - 82:80
-    networks:
-      - pulsar_care
-
-  citas:
-    hostname: citas
-    image: elianfragozo/proyectocitas:v1
-    ports:
-      - 83:80
-    networks:
-      - pulsar_care
-
+  
   usuarios:
-    image:  elianfragozo/proyectousuarios:v2
+    image: elianfragozo/usuarios:v2
     hostname: usuarios
     ports:
-     - "7127:80"
+     - "81:80"
     networks:
-      - pulsar_care
-    environment:
-      - USER_SERVICE_URL=http://usuarios:80/api/Users
-    
+      - proyecto
 
+  citas:
+     image: elianfragozo/proyectocitas:v1
+     hostname: citas
+     ports:
+      - "82:80"
+     networks:
+      - proyecto
+
+  horarios:
+     image: elianfragozo/proyectohorarios:v1
+     hostname: horarios
+     ports:
+      - "83:80"
+     networks:
+      - proyecto
+
+  historias:
+     image: elianfragozo/proyectohistorias:v1
+     hostname: historias
+     ports:
+      - "84:80"
+     networks:
+      - proyecto
+
+      
 networks:
-  pulsar_care:
+  proyecto:
     driver: bridge

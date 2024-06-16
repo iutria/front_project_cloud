@@ -3,7 +3,7 @@ import useAppoimentRegisterModal from '../../states/useAppoimentRegisterModal';
 import { useEffect, useState } from 'react';
 import Swal from 'sweetalert2';
 import axios from 'axios';
-import { MEDICAL_HISTORIES_API } from '../../../../../routes/ApiRoutes';
+import { DATES } from '../../../../../routes/ApiRoutes';
 import { PostDate } from '../../../../../models/Date';
 
 const AppoimentRegisterModal = () => {
@@ -44,7 +44,7 @@ const AppoimentRegisterModal = () => {
         }
 
         try {
-            const resp = await axios.post(MEDICAL_HISTORIES_API+'/Cita', newDate)
+            const resp = await axios.post(DATES+'/Cita', newDate)
             if(resp.status==200){
                 Swal.fire({
                     text: 'Se asigno la cita',

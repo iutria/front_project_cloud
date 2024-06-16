@@ -23,7 +23,7 @@ const NavBar = () => {
                 return;
             } 
             
-            const nameLS = localStorage.getItem('name') ?? '';
+            const nameLS = localStorage.getItem('firstName') ?? '';
             const lastNameLS = localStorage.getItem('lastName') ?? '';
 
             setName(nameLS);

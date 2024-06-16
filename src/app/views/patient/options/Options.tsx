@@ -3,7 +3,7 @@ import FormFields from "../../create-account/components/forms/FormFields"
 import { Patient } from "../../../models/Patient";
 import { Card, Container, Text } from "@nextui-org/react";
 import { useEffect, useState } from "react";
-import { PATIENT_API } from "../../../routes/ApiRoutes";
+import { USERS_API } from "../../../routes/ApiRoutes";
 import axios from "axios";
 import { createAccountValidator } from "../../../validators/create_account.validator";
 import Swal from "sweetalert2";
@@ -15,7 +15,7 @@ const Options = () => {
     const getData = async () => {
         try {
             const id = localStorage.getItem('id');
-            const resp = await axios.get(PATIENT_API + '/Patients/user/' + id)
+            const resp = await axios.get(USERS_API + '/Patients/user/' + id)
             setInitialValues(resp.data);
         } catch (error) {
             Swal.fire({

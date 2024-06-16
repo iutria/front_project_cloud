@@ -4,7 +4,7 @@ import MedicalAppointmensModal from "./components/modals/MedicalAppointmensModal
 import AppoimentRegisterModal from "./components/modals/AppoimentRegisterModal";
 import { useEffect, useState } from "react";
 import axios from "axios";
-import { MEDICAL_HISTORIES_API } from "../../../routes/ApiRoutes";
+import { DATES } from "../../../routes/ApiRoutes";
 import Swal from "sweetalert2";
 import { Date } from "../../../models/Date";
 import useAppoimentRegisterModal from "./states/useAppoimentRegisterModal";
@@ -19,26 +19,30 @@ const MedicalAppointments = () => {
     const getData = async()=>{
         try {
             const id = localStorage.getItem('id');
-            const resp = await axios.get(MEDICAL_HISTORIES_API+'/Cita/por-paciente/'+id)
-            if(resp.status!=200){
-                throw ''
+            const resp = await axios.get(DATES+'/Cita/por-paciente/'+id)
+            if(resp.status==200){
+                setDates(resp.data)
             }
-            setDates(resp.data)
-        } catch (error) {
-            Swal.fire({
-                text: 'Error al solicitar la cita',
-                title: 'Error',
-                icon: 'error',
-                customClass: {
-                    container: 'toFront'
-                }
-            })
+        } catch (error: any) {
+            if(error.response.status == "404"){
+                setDates([]);
+                return;
+            }else{
+                Swal.fire({
+                    text: `Error al cargar las cita ${JSON.stringify(error, null, 2)}`,
+                    title: 'Error',
+                    icon: 'error',
+                    customClass: {
+                        container: 'toFront'
+                    }
+                })
+            }
         }
     }
 
     const deleteDate = async(data: Date)=>{
         try {
-            const resp = await axios.delete(MEDICAL_HISTORIES_API+'/Cita/'+data.id);
+            const resp = await axios.delete(DATES+'/Cita/'+data.id);
             if(resp.status!=200){
                 throw ''
             }

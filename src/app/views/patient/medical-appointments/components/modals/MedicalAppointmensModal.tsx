@@ -1,7 +1,7 @@
 import { Button, Modal, Table, Text } from '@nextui-org/react';
 import useMedicalAppointmensModal from '../../states/useMedicalAppointmensModal';
 import { useEffect, useState } from 'react';
-import { DOCTOR_API } from '../../../../../routes/ApiRoutes';
+import { USERS } from '../../../../../routes/ApiRoutes';
 import axios from 'axios';
 import Swal from 'sweetalert2';
 import { Doctor } from '../../../../../models/Doctor';
@@ -17,7 +17,8 @@ const MedicalAppointmensModal = () => {
 
   const getAllDoctors = async()=>{
     try {
-      const resp = await axios.get(DOCTOR_API + '/all');
+
+      const resp = await axios.get(USERS + '/all');
 
       if(resp.status!=200){
         throw '';
@@ -35,7 +36,7 @@ const MedicalAppointmensModal = () => {
 
   useEffect(
     ()=>{
-      getAllDoctors()
+      getAllDoctors();
     },[visible]
   );
 

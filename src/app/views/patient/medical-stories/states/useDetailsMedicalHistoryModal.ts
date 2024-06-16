@@ -1,17 +1,20 @@
 import { create } from "zustand";
+import { DateResponse } from "../../../../models/Date";
 
 interface useDetailsMedicalHistoryModalProps{
-    id: string | null;
+    date: DateResponse | null;
+    diagnostic: string;
     visible: boolean;
-    showModal: (id: string)=>void;
+    showModal: (diagnostics: DateResponse, diagnostic: string)=>void;
     closeModal: ()=>void;
 }
 
 const useDetailsMedicalHistoryModal = create<useDetailsMedicalHistoryModalProps>((set)=>({
-    id: null,
+    date: null,
+    diagnostic: '',
     visible: false,
-    showModal: (id: string)=>set({visible: true, id}),
-    closeModal: ()=>set({visible: false, id: null})
+    showModal: (date: DateResponse, diagnostic: string)=>set({visible: true, date, diagnostic}),
+    closeModal: ()=>set({visible: false, date: null, diagnostic: ''})
 }))
 
 export default useDetailsMedicalHistoryModal;

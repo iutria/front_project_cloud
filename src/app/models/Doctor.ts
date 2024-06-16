@@ -3,6 +3,7 @@ export interface Doctor {
     nombre:         string;
     apellido:       string;
     email:          string;
+    contraseña:     string;
     especialidades: string[];
     roles:          string[];
 }

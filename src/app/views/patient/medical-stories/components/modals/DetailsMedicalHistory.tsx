@@ -1,27 +1,62 @@
-import { Modal, Text } from "@nextui-org/react"
+import { Modal, Table, Text } from "@nextui-org/react"
 import useDetailsMedicalHistoryModal from "../../states/useDetailsMedicalHistoryModal";
+import { useEffect, useState } from "react";
+import { Diagnostic } from "../../../../../models/Date";
 
 const DetailsMedicalHistoryModal = () => {
 
-    const { visible, closeModal, id } = useDetailsMedicalHistoryModal();
+    const { visible, closeModal, date, diagnostic } = useDetailsMedicalHistoryModal();
+
+    const [diagnostics, setDiagnostics] = useState<Diagnostic[]>([]);
+
+    useEffect(
+        () => {
+            switch (diagnostic) {
+                case 'diagnostics': setDiagnostics(date?.medicalHistory.diagnostics ?? []); break;
+                case 'treatments': setDiagnostics(date?.medicalHistory.treatments ?? []); break;
+                case 'procedures': setDiagnostics(date?.medicalHistory.procedures ?? []); break;
+                default: setDiagnostics([]); break;
+            }
+        }, [diagnostic]
+    )
 
     return (
-        id && <>
+        date && <>
             <Modal
                 closeButton
                 aria-labelledby="modal-recovery"
                 open={visible}
                 onClose={closeModal}
                 blur
+                fullScreen
             >
                 <Modal.Header>
-                    <Text>Ingresa tu correo de recuperación</Text>
+                    <Text h2>Historial</Text>
                 </Modal.Header>
                 <Modal.Body>
-                    {id}
+                    <Table
+                        aria-label="Example table with static content"
+                        css={{
+                            height: "auto",
+                            minWidth: "100%",
+                        }}
+                    >
+                        <Table.Header>
+                            <Table.Column>DESCRIPCIÓN</Table.Column>
+                            <Table.Column>FECHA</Table.Column>
+                        </Table.Header>
+                        <Table.Body>
+                           {
+                            diagnostics.map((item: Diagnostic, index: number)=>(
+                                <Table.Row key={index}>
+                                    <Table.Cell>{item.description}</Table.Cell>
+                                    <Table.Cell>{item.date}</Table.Cell>
+                                </Table.Row>
+                            ))
+                           }
+                        </Table.Body>
+                    </Table>
                 </Modal.Body>
-                <Modal.Footer>
-                </Modal.Footer>
             </Modal>
         </>
     )
