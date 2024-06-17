@@ -34,13 +34,16 @@ const AppoimentRegisterModal = () => {
         const [day, hour] = date.split('T');
         const id = localStorage.getItem('id');
 
+        const name = localStorage.getItem('firstName') + ' ' + localStorage.getItem('lastName')
+
         const newDate: PostDate = {
             dia: day,
             especialidad: body?.especialidades[0] ?? '',
             estado: '',
             hora: hour,
             medicoId: body!.id,
-            pacienteId: id!
+            pacienteId: id!,
+            nombrePaciente: name
         }
 
         try {

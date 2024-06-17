@@ -6,7 +6,7 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import { DATES } from "../../../routes/ApiRoutes";
 import Swal from "sweetalert2";
-import { Date } from "../../../models/Date";
+import { DateResponseSpanish } from "../../../models/Date";
 import useAppoimentRegisterModal from "./states/useAppoimentRegisterModal";
 import { FaTrash } from "react-icons/fa6";
 
@@ -14,7 +14,7 @@ const MedicalAppointments = () => {
     
     const { showModal } = useMedicalAppointmensModal();
     const { visible } = useAppoimentRegisterModal();
-    const [ dates, setDates ] = useState<Date[]>([]);
+    const [ dates, setDates ] = useState<DateResponseSpanish[]>([]);
 
     const getData = async()=>{
         try {
@@ -40,7 +40,7 @@ const MedicalAppointments = () => {
         }
     }
 
-    const deleteDate = async(data: Date)=>{
+    const deleteDate = async(data: DateResponseSpanish)=>{
         try {
             const resp = await axios.delete(DATES+'/Cita/'+data.id);
             if(resp.status!=200){
@@ -69,7 +69,7 @@ const MedicalAppointments = () => {
         }
     }
 
-    const confirmDeleteDate = async(data: Date)=>{
+    const confirmDeleteDate = async(data: DateResponseSpanish)=>{
         Swal.fire({
             title: "Eliminar",
             text: `¿Quieres eliminar la cita ${data.especialidad} del dia ${data.dia.split('T')[0]}?`,
@@ -116,7 +116,7 @@ const MedicalAppointments = () => {
                     <Table.Body>
                         {
                             dates.map(
-                                (item: Date, index: number)=>(
+                                (item: any, index: number)=>(
                                     <Table.Row key={index}>
                                         <Table.Cell>{item.especialidad}</Table.Cell>
                                         <Table.Cell>{item.dia.split('T')[0]}</Table.Cell>

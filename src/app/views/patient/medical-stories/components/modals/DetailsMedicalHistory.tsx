@@ -12,9 +12,9 @@ const DetailsMedicalHistoryModal = () => {
     useEffect(
         () => {
             switch (diagnostic) {
-                case 'diagnostics': setDiagnostics(date?.medicalHistory.diagnostics ?? []); break;
-                case 'treatments': setDiagnostics(date?.medicalHistory.treatments ?? []); break;
-                case 'procedures': setDiagnostics(date?.medicalHistory.procedures ?? []); break;
+                case 'diagnostics': setDiagnostics(date?.diagnostics ?? []); break;
+                case 'treatments': setDiagnostics(date?.treatments ?? []); break;
+                case 'procedures': setDiagnostics(date?.procedures ?? []); break;
                 default: setDiagnostics([]); break;
             }
         }, [diagnostic]

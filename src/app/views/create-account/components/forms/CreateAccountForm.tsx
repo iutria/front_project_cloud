@@ -47,9 +47,9 @@ const CreateAccountForm = () => {
                         actions.setErrors({});
                     }else{
                         Swal.fire({
-                            icon: "success",
-                            title: "OK",
-                            text: `Se ha registrado correctamente`,
+                            icon: "error",
+                            title: "Error",
+                            text: `Ha ocurrido un error al registrar`,
                         });
                     }
                     

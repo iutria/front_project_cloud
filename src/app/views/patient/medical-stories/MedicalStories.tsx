@@ -24,7 +24,8 @@ const MedicalStories = () => {
                 setDates(resp.data)
             }
         } catch (error:any) {
-            if(error.status==400){
+            console.log(error)
+            if(error.response.status==400 || error.response.status==404){
                 setDates([])
             }else{
                 Swal.fire({
@@ -64,10 +65,10 @@ const MedicalStories = () => {
                         dates.map((item: DateResponse, index: number)=>(
                             <Table.Row key={index}>
                                 <Table.Cell>
-                                    nombre del medico
+                                    {item.medicoNombre ?? 'Sin dato'}
                                 </Table.Cell>
-                                <Table.Cell>Especialidad</Table.Cell>
-                                <Table.Cell>Fecha</Table.Cell>
+                                <Table.Cell>{item.medicoEspecialidad ?? 'Sin dato'}</Table.Cell>
+                                <Table.Cell>{item.fechaCreacion.split('T')[0]}</Table.Cell>
                                 <Table.Cell>
                                     <Container css={{display: 'flex', gap: '$5'}}>
                                         <Tooltip content='Tratamientos'>

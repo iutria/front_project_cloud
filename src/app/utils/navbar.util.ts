@@ -28,18 +28,13 @@ export const patientOptions : Option[] = [
 
 export const medicalOptions : Option[] = [
     {
-        url: PageRoutes.MEDICAL_APPOINTMENTS,
+        url: PageRoutes.DOCTOR_MEDICAL_APPOINTMENTS,
         name: 'Consultar Citas',
-        icon: FaCalendarAlt
-    },
-    {
-        url: PageRoutes.MEDICAL_APPOINTMENTS,
-        name: 'Registrar Historial',
         icon: FaHistory
     },
     {
-        url: PageRoutes.MEDICAL_APPOINTMENTS,
-        name: 'Horarios',
+        url: PageRoutes.DOCTOR_SCHEDULE,
+        name: 'Registrar Horario',
         icon: FaCalendarAlt
     }
 ]

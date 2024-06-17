@@ -1,16 +1,19 @@
 export interface Date{
     id:           string;
-    pacienteId:   string;
-    medicoId:     string;
-    hora:         string;
-    dia:          string;
-    especialidad: string;
-    estado:       string;
+    patientId:          string;
+    medicoId:           string;
+    medicoNombre:       string;
+    medicoEspecialidad: string;
+    diagnostics:        Diagnostic[];
+    treatments:         Diagnostic[];
+    procedures:         Diagnostic[];
+    fechaCreacion:      string;
 }
 
 export interface PostDate{
     pacienteId:   string;
     medicoId:     string;
+    nombrePaciente:     string;
     hora:         string;
     dia:          string;
     especialidad: string;
@@ -19,17 +22,19 @@ export interface PostDate{
 
 export interface DateResponse {
     medicalHistory: MedicalHistory;
-    medico:         Medico;
+    medicoNombre:       string;
+    medicoEspecialidad:       string;
+    patientId:     string;
+    medico:        Medico;
+    fechaCreacion: string;
+    diagnostics:   Diagnostic[];
+    treatments:    Diagnostic[];
+    procedures:    Diagnostic[];
 }
 
 export interface MedicalHistory {
     id:            string;
-    patientId:     string;
-    medico:        Medico;
-    fechaCreacion: Date;
-    diagnostics:   Diagnostic[];
-    treatments:    Diagnostic[];
-    procedures:    Diagnostic[];
+    
 }
 
 export interface Diagnostic {
@@ -42,4 +47,16 @@ export interface Medico {
     id:           string;
     nombre:       string;
     especialidad: string;
+}
+
+
+export interface DateResponseSpanish{
+    id:             string;
+    pacienteId:     string;
+    nombrePaciente: string;
+    medicoId:       string;
+    hora:           string;
+    dia:            string;
+    especialidad:   string;
+    estado:         string;
 }

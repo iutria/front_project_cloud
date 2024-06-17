@@ -1,6 +1,7 @@
 import axios from "axios";
 import { create } from "zustand";
 import { Patient } from "../../../models/Patient";
+import { USERS_API } from "../../../routes/ApiRoutes";
 
 interface useCreateAccountProps{
     isLoading: boolean;
@@ -16,8 +17,8 @@ export const useCreateAccount = create<useCreateAccountProps>(
                 values.identificationNumber = values.identificationNumber.toString();
                 values.phone = values.phone.toString();
                 const resp = await axios.post(
-                    import.meta.env.VITE_PATIENT_API + '/Patients', 
-                    values
+                    USERS_API + '/Patients/patients', 
+                    {...values, id: '', roles: [], patientDto: {}}
                 );
                 set({isLoading: false});
                 if(resp.status==201){
